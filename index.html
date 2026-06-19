@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Janashruthi Sivasankar | IT & Development Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #0A0E1A;
+    --navy: #0D1B2A;
+    --navy2: #112240;
+    --blue: #00B4FF;
+    --cyan: #00FFD1;
+    --white: #E8F0FF;
+    --grey: #8892A4;
+    --card: #0F1E33;
+    --border: rgba(0,180,255,0.15);
+    --glow: 0 0 24px rgba(0,180,255,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+  /* STAR CANVAS */
+  #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 60px; background: rgba(10,14,26,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: var(--grey); text-decoration: none; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; transition: color 0.2s; cursor: pointer; }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 60px 80px; position: relative; z-index: 1; }
+  .hero-content { position: relative; z-index: 1; max-width: 750px; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--cyan); border: 1px solid rgba(0,255,209,0.3); padding: 6px 14px; border-radius: 4px; margin-bottom: 28px; animation: fadeUp 0.6s ease both; }
+  .hero-tag::before { content: '▶'; font-size: 0.6rem; }
+  .hero-name { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-name .accent { color: var(--blue); }
+  .hero-title { font-family: 'JetBrains Mono', monospace; font-size: clamp(1rem, 2vw, 1.3rem); color: var(--grey); margin: 16px 0 28px; animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-title .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--cyan); margin-left: 2px; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+  .hero-desc { font-size: 1rem; color: var(--grey); max-width: 580px; line-height: 1.75; margin-bottom: 36px; animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeUp 0.6s 0.4s ease both; }
+  .btn-primary { background: var(--blue); color: var(--black); padding: 12px 28px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.9rem; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 20px rgba(0,180,255,0.3); }
+  .btn-primary:hover { background: var(--cyan); transform: translateY(-2px); }
+  .btn-outline { border: 1px solid var(--blue); color: var(--blue); padding: 12px 28px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.9rem; text-decoration: none; background: transparent; cursor: pointer; transition: all 0.2s; }
+  .btn-outline:hover { background: rgba(0,180,255,0.1); transform: translateY(-2px); }
+  .hero-stats { display: flex; gap: 48px; margin-top: 56px; animation: fadeUp 0.6s 0.5s ease both; }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--blue); display: block; }
+  .stat-label { font-size: 0.75rem; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero-avatar { position: absolute; right: 60px; top: 50%; transform: translateY(-50%); z-index: 1; animation: fadeUp 0.8s 0.3s ease both; }
+  .avatar-ring { width: 300px; height: 300px; border-radius: 50%; border: 2px solid rgba(0,180,255,0.3); display: flex; align-items: center; justify-content: center; position: relative; box-shadow: var(--glow); }
+  .avatar-ring::before { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 1px solid rgba(0,255,209,0.1); animation: spin 20s linear infinite; }
+  .avatar-inner { width: 260px; height: 260px; border-radius: 50%; background: linear-gradient(135deg, var(--navy2), var(--card)); border: 2px solid rgba(0,180,255,0.2); display: flex; align-items: center; justify-content: center; }
+  .avatar-initials { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; color: var(--blue); text-shadow: 0 0 30px rgba(0,180,255,0.5); }
+
+  /* SECTIONS */
+  section { padding: 100px 60px; position: relative; z-index: 1; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; display: block; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
+  .section-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 2px; margin-bottom: 56px; }
+
+  /* ABOUT */
+  #about { background: rgba(13,27,42,0.85); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .about-text p { color: var(--grey); line-height: 1.8; margin-bottom: 20px; font-size: 0.95rem; }
+  .about-text p strong { color: var(--white); }
+  .about-info { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+  .info-item { display: flex; flex-direction: column; gap: 4px; }
+  .info-label { font-size: 0.72rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+  .info-val { font-size: 0.9rem; color: var(--white); }
+  .about-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .about-card:hover { border-color: rgba(0,180,255,0.4); box-shadow: var(--glow); }
+  .about-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; color: var(--blue); }
+  .about-card p { font-size: 0.85rem; color: var(--grey); line-height: 1.6; }
+
+  /* SKILLS */
+  #skills { background: rgba(10,14,26,0.85); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+  .skill-cat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: border-color 0.2s, transform 0.2s; }
+  .skill-cat:hover { border-color: rgba(0,180,255,0.35); transform: translateY(-4px); }
+  .skill-cat-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--cyan); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .skill-item { margin-bottom: 16px; }
+  .skill-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .skill-name { font-size: 0.82rem; color: var(--white); }
+  .skill-pct { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--blue); }
+  .skill-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .skill-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+  .lang-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lang-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--blue); border: 1px solid rgba(0,180,255,0.3); padding: 4px 10px; border-radius: 4px; background: rgba(0,180,255,0.05); }
+
+  /* EXPERIENCE */
+  #experience { background: rgba(13,27,42,0.85); }
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--blue), var(--cyan), transparent); }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-dot { position: absolute; left: -39px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--blue); border: 2px solid var(--black); box-shadow: 0 0 12px rgba(0,180,255,0.5); }
+  .timeline-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .timeline-card:hover { border-color: rgba(0,180,255,0.35); box-shadow: var(--glow); }
+  .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 6px; }
+  .timeline-role { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--white); }
+  .timeline-period { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--cyan); border: 1px solid rgba(0,255,209,0.25); padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
+  .timeline-company { font-size: 0.85rem; color: var(--blue); margin-bottom: 16px; font-weight: 500; }
+  .timeline-bullets { list-style: none; }
+  .timeline-bullets li { font-size: 0.87rem; color: var(--grey); padding: 5px 0 5px 16px; position: relative; line-height: 1.6; }
+  .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--blue); font-size: 0.7rem; top: 7px; }
+  .timeline-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .t-tag { font-size: 0.72rem; color: var(--grey); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 4px; }
+
+  /* PROJECTS */
+  #projects { background: rgba(10,14,26,0.85); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.25s; position: relative; overflow: hidden; }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); opacity: 0; transition: opacity 0.2s; }
+  .project-card:hover { border-color: rgba(0,180,255,0.4); box-shadow: var(--glow); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-icon { font-size: 1.8rem; margin-bottom: 16px; }
+  .project-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+  .project-desc { font-size: 0.85rem; color: var(--grey); line-height: 1.65; margin-bottom: 16px; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tech-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--cyan); background: rgba(0,255,209,0.06); border: 1px solid rgba(0,255,209,0.2); padding: 3px 8px; border-radius: 3px; }
+
+  /* CERTIFICATIONS */
+  #certifications { background: rgba(13,27,42,0.85); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .cert-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; gap: 16px; align-items: flex-start; transition: all 0.2s; }
+  .cert-card:hover { border-color: rgba(0,180,255,0.4); box-shadow: var(--glow); transform: translateY(-2px); }
+  .cert-icon { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, rgba(0,180,255,0.15), rgba(0,255,209,0.1)); border: 1px solid rgba(0,180,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .cert-info h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+  .cert-info p { font-size: 0.78rem; color: var(--grey); }
+  .cert-year { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--cyan); margin-top: 6px; display: block; }
+
+  /* EDUCATION */
+  #education { background: rgba(10,14,26,0.85); }
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .edu-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.2s; }
+  .edu-card:hover { border-color: rgba(0,180,255,0.4); box-shadow: var(--glow); }
+  .edu-degree { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  .edu-school { font-size: 0.85rem; color: var(--blue); margin-bottom: 4px; }
+  .edu-period { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--grey); }
+
+  /* CONTACT */
+  #contact { background: rgba(13,27,42,0.85); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+  .contact-info p { color: var(--grey); font-size: 0.95rem; line-height: 1.75; margin-bottom: 32px; }
+  .contact-links { display: flex; flex-direction: column; gap: 14px; }
+  .contact-link { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); text-decoration: none; color: var(--white); font-size: 0.88rem; transition: all 0.2s; }
+  .contact-link:hover { border-color: rgba(0,180,255,0.4); box-shadow: var(--glow); transform: translateX(4px); }
+  .contact-link-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+  .contact-form { display: flex; flex-direction: column; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 0.78rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; }
+  .form-input, .form-textarea { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; width: 100%; }
+  .form-input:focus, .form-textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,180,255,0.1); }
+  .form-textarea { resize: vertical; min-height: 110px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* FOOTER */
+  footer { background: rgba(10,14,26,0.95); border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; font-size: 0.8rem; color: var(--grey); font-family: 'JetBrains Mono', monospace; position: relative; z-index: 1; }
+  footer span { color: var(--blue); }
+
+  
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes typingDot { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-4px); opacity: 1; } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    .nav-links { gap: 18px; }
+    #hero { padding: 100px 24px 60px; }
+    .hero-avatar { display: none; }
+    section { padding: 70px 24px; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 24px; }
+    #chatbot-window { width: calc(100vw - 32px); right: 16px; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="star-canvas"></canvas>
+
+<nav>
+  <div class="nav-logo">JS<span>.</span>dev</div>
+  <ul class="nav-links">
+    <li><a onclick="navTo('about')">about</a></li>
+    <li><a onclick="navTo('skills')">skills</a></li>
+    <li><a onclick="navTo('experience')">experience</a></li>
+    <li><a onclick="navTo('projects')">projects</a></li>
+    <li><a onclick="navTo('certifications')">certs</a></li>
+    <li><a onclick="navTo('contact')">contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Open to Opportunities · Sydney, NSW</div>
+    <h1 class="hero-name">Janashruthi<br><span class="accent">Sivasankar</span></h1>
+    <div class="hero-title"><span id="typed-text"></span><span class="cursor"></span></div>
+    <p class="hero-desc">IT Support professional and developer based in Sydney, NSW. Experienced in end-user support, infrastructure, web development, and exploring AI and data technologies. Master of Applied IT — Victoria University (2024).</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="navTo('contact')">Get In Touch</button>
+      <button class="btn-outline" onclick="navTo('experience')">View Experience</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Years Experience</span></div>
+      <div class="stat-item"><span class="stat-num">6</span><span class="stat-label">Certifications</span></div>
+      <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Projects</span></div>
+      <div class="stat-item"><span class="stat-num" style="color:var(--cyan)">ACS</span><span class="stat-label">Pro Year 2025–26</span></div>
+    </div>
+  </div>
+  <div class="hero-avatar">
+    <div class="avatar-ring">
+      <div class="avatar-inner"><span class="avatar-initials">JS</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <span class="section-label">01 — About</span>
+  <h2 class="section-title">Who I Am</h2>
+  <div class="section-line"></div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I'm an IT Support professional and developer based in Sydney with <strong>hands-on experience across technical support, infrastructure, and software development</strong>. I currently work at Parkus Technologies Pty Ltd delivering client and end-user support, coordinating with senior engineers, and managing workstation provisioning, server drive mapping, and large-scale system deployments across multiple sites.</p>
+      <p>My career in technology started as a <strong>Web Developer</strong> — my first professional role was building responsive, database-driven websites in India, where I gained full-stack experience that continues to shape how I think about technology. I'm passionate about <strong>programming, AI, and machine learning</strong> — not just support work.</p>
+      <p>I hold a <strong>Master of Applied Information Technology</strong> from Victoria University (2024) and a Bachelor of Science in Computer Science, with active certifications in cybersecurity, cloud, and networking. I am currently completing the <strong>ACS Professional Year Program (May 2025 – May 2026)</strong>, deepening my professional skills and industry readiness in the Australian IT sector. I'm also building skills in <strong>generative AI, data analytics, and Python development</strong> — areas I'm genuinely excited about.</p>
+      <p>I also bring experience across <strong>logistics, export operations, and retail</strong> in both Australia and India, giving me a strong work ethic and the ability to perform reliably in fast-paced environments.</p>
+      <div class="about-info">
+        <div class="info-item"><span class="info-label">Location</span><span class="info-val">Sydney, NSW</span></div>
+        <div class="info-item"><span class="info-label">Work Rights</span><span class="info-val">Full Work Rights 🇦🇺</span></div>
+        <div class="info-item"><span class="info-label">Education</span><span class="info-val">Master of Applied IT</span></div>
+        <div class="info-item"><span class="info-label">Status</span><span class="info-val" style="color:var(--cyan)">Open to Opportunities</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="about-card"><h4>🖥️ IT Support & Infrastructure</h4><p>First-level client and end-user support across hardware, software, and multi-site environments. Workstation provisioning, server drive mapping, Windows 10/11 & Server, and large-scale deployments of 70–100+ systems.</p></div>
+      <div class="about-card"><h4>💻 Web Development</h4><p>Professional web development experience — built responsive, database-driven websites and e-commerce platforms using HTML, CSS, JavaScript, Python, and SQL, both professionally and through personal projects.</p></div>
+      <div class="about-card"><h4>🤖 AI, Data & Programming</h4><p>Actively developing skills in Python, generative AI, and machine learning. Built an AI-powered chatbot using PyTorch, NumPy, and Pandas. Completed AWS Educate certifications in Cloud, Generative AI, and ML Foundations.</p></div>
+      <div class="about-card"><h4>📦 Logistics & Operations</h4><p>Warehouse, export operations, and retail experience across Australia and India — bringing reliability, accuracy, and strong performance under pressure.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <span class="section-label">02 — Skills</span>
+  <h2 class="section-title">Technical Toolkit</h2>
+  <div class="section-line"></div>
+  <div class="skills-grid">
+    <div class="skill-cat reveal">
+      <div class="skill-cat-title">🖥️ IT Support</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Windows 10/11 & Server</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Workstation Provisioning</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Remote Support (RDP, TeamViewer)</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Server Mapping & Asset Management</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill" data-width="82"></div></div></div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-title">💻 Programming & Development</div>
+      <div class="lang-tags">
+        <span class="lang-tag">Python</span><span class="lang-tag">HTML</span><span class="lang-tag">CSS / Sass</span>
+        <span class="lang-tag">JavaScript</span><span class="lang-tag">SQL</span><span class="lang-tag">Git</span>
+        <span class="lang-tag">GitHub</span><span class="lang-tag">VS Code</span><span class="lang-tag">NumPy</span>
+        <span class="lang-tag">Pandas</span><span class="lang-tag">PyTorch</span><span class="lang-tag">Generative AI</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-title">🤖 AI & Data</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Machine Learning (PyTorch)</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-width="65"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Generative AI (AWS Educate)</span><span class="skill-pct">60%</span></div><div class="skill-bar"><div class="skill-fill" data-width="60"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Data Analysis (Pandas, NumPy)</span><span class="skill-pct">68%</span></div><div class="skill-bar"><div class="skill-fill" data-width="68"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Cloud Fundamentals (AWS)</span><span class="skill-pct">62%</span></div><div class="skill-bar"><div class="skill-fill" data-width="62"></div></div></div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-title">📋 Documentation & Compliance</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Incident Logging & Reporting</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Asset Record Maintenance</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill" data-width="88"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name">Compliance Procedures</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <span class="section-label">03 — Experience</span>
+  <h2 class="section-title">Work History</h2>
+  <div class="section-line"></div>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header"><div class="timeline-role">IT Support Technician (Part-Time)</div><div class="timeline-period">Apr 2024 – Present</div></div>
+        <div class="timeline-company">Parkus Technologies Pty Ltd · Seven Hills, Sydney</div>
+        <ul class="timeline-bullets">
+          <li>Provide first-level IT support across hardware, software, and connectivity issues in a live multi-site operational environment, supporting both technical and non-technical users with patience and clarity</li>
+          <li>Contact clients directly when issues arise, walking them through step-by-step resolution over the phone and via live remote support (RDP, TeamViewer), coordinating with senior engineers during calls</li>
+          <li>Install, configure, and maintain Windows 10/11 workstations and Windows Server environments across multiple client sites; provision and deploy desktops, printers, scanners, webcams, and peripherals</li>
+          <li>Map server drives and shared folders to client workstations; carry out regular system and software updates across all endpoints to ensure stability</li>
+          <li>Assist in large-scale system deployments of 70–100+ workstations for operational events</li>
+          <li>Maintain accurate asset records, server mappings, configuration documentation, and incident logs</li>
+        </ul>
+        <div class="timeline-tags"><span class="t-tag">Windows Server</span><span class="t-tag">RDP</span><span class="t-tag">TeamViewer</span><span class="t-tag">Client Support</span><span class="t-tag">Asset Management</span><span class="t-tag">Documentation</span></div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header"><div class="timeline-role">Test Centre Administrator (Part-Time)</div><div class="timeline-period">Oct 2022 – Present</div></div>
+        <div class="timeline-company">Parkus Technologies Pty Ltd · Seven Hills, NSW</div>
+        <ul class="timeline-bullets">
+          <li>Managed end-to-end site setup for exam sessions across multiple locations, configuring desktops, printers, scanners, and biometric devices to ensure all equipment was operational before each session</li>
+          <li>Prepared and validated workstations, printers, webcams, signature pads, and exam software across multiple exam session environments</li>
+          <li>Acted as first point of contact for candidates experiencing login, system, and connectivity issues — resolving or escalating as required</li>
+          <li>Verified candidate IDs, supervised exam sessions, and enforced strict compliance protocols to maintain a secure and accurate testing environment</li>
+          <li>Handled inbound calls for exam bookings and scheduling, ensuring accurate data entry and a smooth candidate experience</li>
+          <li>Maintained detailed incident logs and asset records using Excel and internal systems</li>
+        </ul>
+        <div class="timeline-tags"><span class="t-tag">Exam Operations</span><span class="t-tag">Compliance</span><span class="t-tag">Incident Logging</span><span class="t-tag">Workstation Setup</span><span class="t-tag">Candidate Support</span><span class="t-tag">Scheduling</span></div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header"><div class="timeline-role">Junior Web Developer</div><div class="timeline-period">Apr 2021 – Dec 2021</div></div>
+        <div class="timeline-company">Fabevy Technologies Pty Ltd · Chennai, India</div>
+        <ul class="timeline-bullets">
+          <li>Developed responsive and database-driven websites using HTML, CSS, JavaScript, and SQL</li>
+          <li>Maintained version-controlled documentation and coordinated updates using GitHub</li>
+          <li>Assisted in deployment, hosting setup, and backend integrations; performed UI improvements and bug fixes based on client feedback</li>
+        </ul>
+        <div class="timeline-tags"><span class="t-tag">HTML/CSS</span><span class="t-tag">JavaScript</span><span class="t-tag">SQL</span><span class="t-tag">GitHub</span><span class="t-tag">Deployment</span></div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header"><div class="timeline-role">Store Supervisor / Packing & Replenishment</div><div class="timeline-period">May 2023 – Dec 2023</div></div>
+        <div class="timeline-company">Loju Supermarket · Seven Hills, NSW</div>
+        <ul class="timeline-bullets">
+          <li>Supervised shift operations, handled opening and closing procedures, and trained new team members</li>
+          <li>Managed stocktakes, inventory counts, shelf replenishment, and expiry date checks to keep stock accurate and presentable</li>
+        </ul>
+        <div class="timeline-tags"><span class="t-tag">Supervision</span><span class="t-tag">Inventory</span><span class="t-tag">Retail Ops</span><span class="t-tag">Stock Management</span></div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header"><div class="timeline-role">Warehouse Packer / Export Operations</div><div class="timeline-period">Jun 2021 – Jun 2022</div></div>
+        <div class="timeline-company">Fresh Flower Kingdom · Chennai, India</div>
+        <ul class="timeline-bullets">
+          <li>Picked and packed export goods (flowers, clothing, groceries) to international shipment standards, ensuring correct weight, measurements, and presentation</li>
+          <li>Printed and verified invoices and dispatch documentation for export compliance; maintained accurate records per shipment</li>
+        </ul>
+        <div class="timeline-tags"><span class="t-tag">Export Ops</span><span class="t-tag">Quality Control</span><span class="t-tag">Compliance Docs</span><span class="t-tag">Warehouse</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <span class="section-label">04 — Projects</span>
+  <h2 class="section-title">What I've Built</h2>
+  <div class="section-line"></div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-icon">🤖</div>
+      <div class="project-title">AI-Powered E-Commerce Chatbot</div>
+      <p class="project-desc">Built an intelligent chatbot for e-commerce customer support using machine learning — trained on product data with PyTorch, NumPy, and Pandas to answer customer queries accurately.</p>
+      <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">PyTorch</span><span class="tech-tag">NumPy</span><span class="tech-tag">Pandas</span><span class="tech-tag">NLP</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">💎</div>
+      <div class="project-title">Jewellery Showroom E-Commerce Site</div>
+      <p class="project-desc">Developed a fully functional e-commerce website for a jewellery showroom including product catalogue, shopping cart, and database-driven inventory management.</p>
+      <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">SQL</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">🌸</div>
+      <div class="project-title">Flower Shop Website</div>
+      <p class="project-desc">Designed and built a complete website for a flower shop featuring product listings, gallery, and contact functionality — clean, responsive design built with vanilla web technologies.</p>
+      <div class="project-tech"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">🎓</div>
+      <div class="project-title">Udemy Clone</div>
+      <p class="project-desc">Built a feature-rich clone of the Udemy learning platform, replicating the course browsing experience, UI layout, and responsive design across screen sizes.</p>
+      <div class="project-tech"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Responsive Design</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-icon">✈️</div>
+      <div class="project-title">TripAdvisor Clone</div>
+      <p class="project-desc">Created a responsive travel platform clone emphasising user experience and scalability, with location browsing, reviews UI, and mobile-friendly layouts.</p>
+      <div class="project-tech"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Responsive Design</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <span class="section-label">05 — Certifications</span>
+  <h2 class="section-title">Credentials</h2>
+  <div class="section-line"></div>
+  <div class="certs-grid">
+    <div class="cert-card reveal"><div class="cert-icon">🛡️</div><div class="cert-info"><h4>Fortinet Certified Associate in Cybersecurity (FCA)</h4><p>Fortinet</p><span class="cert-year">Earned Nov 2025 · Expires Nov 2027</span></div></div>
+    <div class="cert-card reveal"><div class="cert-icon">🔐</div><div class="cert-info"><h4>Fortinet Certified Fundamentals in Cybersecurity (FCF)</h4><p>Fortinet</p><span class="cert-year">Earned Nov 2025 · Expires Nov 2027</span></div></div>
+    <div class="cert-card reveal"><div class="cert-icon">🔧</div><div class="cert-info"><h4>Google IT Support Professional Certificate</h4><p>Google · Coursera</p><span class="cert-year">2025</span></div></div>
+    <div class="cert-card reveal"><div class="cert-icon">☁️</div><div class="cert-info"><h4>AWS Educate: Cloud 101, Generative AI, ML Foundations</h4><p>Amazon Web Services</p><span class="cert-year">2025</span></div></div>
+    <div class="cert-card reveal"><div class="cert-icon">🌐</div><div class="cert-info"><h4>Cisco Networking Academy – IT Essentials</h4><p>Cisco</p><span class="cert-year">2025</span></div></div>
+    <div class="cert-card reveal"><div class="cert-icon">💻</div><div class="cert-info"><h4>Full-Stack Web Development Certification</h4><p>Professional Certification</p><span class="cert-year">Completed</span></div></div>
+  </div>
+</section>
+
+<section id="education">
+  <span class="section-label">06 — Education</span>
+  <h2 class="section-title">Academic Background</h2>
+  <div class="section-line"></div>
+  <div class="edu-grid">
+    <div class="edu-card reveal" style="border-color:rgba(0,255,209,0.3);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:12px;right:12px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--cyan);background:rgba(0,255,209,0.08);border:1px solid rgba(0,255,209,0.25);padding:3px 8px;border-radius:4px;">In Progress</div>
+      <div class="edu-degree">ACS Professional Year Program</div>
+      <div class="edu-school">Australian Computer Society (ACS)</div>
+      <div class="edu-period">May 2025 – May 2026</div>
+    </div>
+    <div class="edu-card reveal"><div class="edu-degree">Master of Applied Information Technology</div><div class="edu-school">Victoria University · Sydney</div><div class="edu-period">2022 – 2024</div></div>
+    <div class="edu-card reveal"><div class="edu-degree">Bachelor of Science in Computer Science</div><div class="edu-school">Guru Nanak College · Chennai, Tamil Nadu, India</div><div class="edu-period">2018 – 2021</div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <span class="section-label">07 — Contact</span>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="section-line"></div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>I'm open to IT support roles, developer positions, AI/data opportunities, and logistics roles across Sydney. Feel free to reach out — I'd love to connect.</p>
+      <div class="contact-links">
+        <a href="mailto:janashruthi1912@gmail.com" class="contact-link"><span class="contact-link-icon">📧</span>janashruthi1912@gmail.com</a>
+        <a href="tel:0434727115" class="contact-link"><span class="contact-link-icon">📱</span>0434 727 115</a>
+        <a href="https://www.linkedin.com/in/janashruthi-sivasankar-12328b210/" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="contact-link-icon">🔗</span>LinkedIn — Janashruthi Sivasankar</a>
+        <a href="https://github.com/Janashruthi19" target="_blank" rel="noopener noreferrer" class="contact-link"><span class="contact-link-icon">⚙️</span>GitHub — Janashruthi19</a>
+      </div>
+    </div>
+    <div>
+      <p style="color:var(--grey);font-size:0.85rem;margin-bottom:16px;">Fill in your details below — the message goes straight to Jana's inbox.</p>
+
+      <div data-fs-success style="display:none;padding:16px;border-radius:8px;background:rgba(0,180,255,0.1);border:1px solid rgba(0,180,255,0.3);color:#00FFD1;font-size:0.88rem;margin-bottom:16px;">
+        ✓ Message sent! Jana will be in touch soon.
+      </div>
+      <div data-fs-error style="display:none;padding:16px;border-radius:8px;background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.3);color:#ff8080;font-size:0.88rem;margin-bottom:16px;"></div>
+
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name *</label>
+            <input type="text" name="name" class="form-input" placeholder="Jane Smith" required data-fs-field/>
+            <span data-fs-error="name" style="color:#ff8080;font-size:0.75rem;"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input type="text" name="company" class="form-input" placeholder="Acme Corp" data-fs-field/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Email *</label>
+          <input type="email" name="email" class="form-input" placeholder="jane@company.com" required data-fs-field/>
+          <span data-fs-error="email" style="color:#ff8080;font-size:0.75rem;"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message *</label>
+          <textarea name="message" class="form-textarea" placeholder="Tell me about the opportunity..." required data-fs-field></textarea>
+          <span data-fs-error="message" style="color:#ff8080;font-size:0.75rem;"></span>
+        </div>
+        <button type="submit" class="btn-primary" data-fs-submit-btn style="width:100%;text-align:center;border:none;padding:14px 28px;">Send Message →</button>
+      </form>
+
+      <script>
+        window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+        formspree('initForm', { formElement: '#contact-form', formId: 'xykaqdgj' });
+      </script>
+      <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built by <span>Janashruthi Sivasankar</span> · Sydney NSW · <span>Full Work Rights</span></p>
+  <p style="margin-top:8px;font-size:0.7rem;opacity:0.35">janashruthi1912@gmail.com · 0434 727 115</p>
+</footer>
+
+
+
+
+<script>
+// ── STAR BACKGROUND ──
+(function() {
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [], shootingStars = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 220; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.4 + 0.3,
+        alpha: Math.random() * 0.7 + 0.2,
+        speed: Math.random() * 0.015 + 0.005,
+        twinkleDir: Math.random() > 0.5 ? 1 : -1
+      });
+    }
+  }
+
+  function spawnShootingStar() {
+    if (Math.random() < 0.003) {
+      shootingStars.push({
+        x: Math.random() * W * 0.7,
+        y: Math.random() * H * 0.4,
+        len: Math.random() * 120 + 80,
+        speed: Math.random() * 8 + 6,
+        alpha: 1,
+        angle: Math.PI / 5
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Deep space gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#050A14');
+    grad.addColorStop(0.5, '#0A0E1A');
+    grad.addColorStop(1, '#060D18');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle nebula glow
+    const neb1 = ctx.createRadialGradient(W * 0.7, H * 0.3, 0, W * 0.7, H * 0.3, W * 0.35);
+    neb1.addColorStop(0, 'rgba(0,80,160,0.06)');
+    neb1.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb1;
+    ctx.fillRect(0, 0, W, H);
+
+    const neb2 = ctx.createRadialGradient(W * 0.2, H * 0.6, 0, W * 0.2, H * 0.6, W * 0.25);
+    neb2.addColorStop(0, 'rgba(0,160,120,0.04)');
+    neb2.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb2;
+    ctx.fillRect(0, 0, W, H);
+
+    // Stars
+    stars.forEach(s => {
+      s.alpha += s.speed * s.twinkleDir;
+      if (s.alpha > 0.9 || s.alpha < 0.1) s.twinkleDir *= -1;
+      ctx.save();
+      ctx.globalAlpha = s.alpha;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      const hue = Math.random() > 0.85 ? '#B0D4FF' : '#ffffff';
+      ctx.fillStyle = hue;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Shooting stars
+    spawnShootingStar();
+    shootingStars = shootingStars.filter(s => s.alpha > 0.01);
+    shootingStars.forEach(s => {
+      ctx.save();
+      ctx.globalAlpha = s.alpha;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      const ex = s.x + Math.cos(s.angle) * s.len;
+      const ey = s.y + Math.sin(s.angle) * s.len;
+      const grad = ctx.createLinearGradient(s.x, s.y, ex, ey);
+      grad.addColorStop(0, 'rgba(255,255,255,0)');
+      grad.addColorStop(0.3, 'rgba(180,220,255,0.8)');
+      grad.addColorStop(1, 'rgba(0,180,255,0.9)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.restore();
+      s.x += Math.cos(s.angle) * s.speed;
+      s.y += Math.sin(s.angle) * s.speed;
+      s.alpha -= 0.022;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+})();
+
+// ── NAV SCROLL ──
+function navTo(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  const navH = document.querySelector('nav').offsetHeight;
+  const top = target.getBoundingClientRect().top + window.pageYOffset - navH - 20;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+// ── TYPED HERO ──
+const roles = ['IT Support Technician', 'Web Developer', 'AI & Python Enthusiast', 'IT Graduate · Sydney'];
+let rIdx = 0, cIdx = 0, deleting = false;
+const typedEl = document.getElementById('typed-text');
+function typeLoop() {
+  const word = roles[rIdx];
+  if (!deleting) {
+    typedEl.textContent = word.slice(0, ++cIdx);
+    if (cIdx === word.length) { deleting = true; setTimeout(typeLoop, 2000); return; }
+  } else {
+    typedEl.textContent = word.slice(0, --cIdx);
+    if (cIdx === 0) { deleting = false; rIdx = (rIdx + 1) % roles.length; setTimeout(typeLoop, 400); return; }
+  }
+  setTimeout(typeLoop, deleting ? 40 : 70);
+}
+typeLoop();
+
+// ── SCROLL REVEAL ──
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+// ── SKILL BARS ──
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.querySelectorAll('.skill-fill').forEach(b => { b.style.width = b.dataset.width + '%'; });
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.skill-cat').forEach(el => skillObs.observe(el));
+
+</script>
+</body>
+</html>
