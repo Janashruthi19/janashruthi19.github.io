@@ -6,7 +6,7 @@ Personal portfolio website built with HTML, CSS, and JavaScript.
 
 ## About
 This portfolio showcases my experience in IT Support, Web Development, 
-and AI/Python projects. Built with vanilla HTML, CSS, and JavaScript.
+and AI/Python projects. Built with HTML, CSS, and JavaScript.
 
 ## Contact
 📧 janashruthi1912@gmail.com
